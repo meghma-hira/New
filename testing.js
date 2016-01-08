@@ -24,5 +24,6 @@ var processCustomers=function(customers,next){
 
 
 processCustomers(customers,function(){
+    console.log(customers);
     console.log('done-----------------')
 })
