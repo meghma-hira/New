@@ -6,14 +6,13 @@ var storehippo = require('storehippo-nodejs-sdk')({
     access_key : "admin"
 });
 
-
-var request = {
+var getOrder = {
     entity : "ms.orders"
 
 }
 
 
-storehippo.list(request, function(err, response){
+storehippo.list(getOrder, function(err, response){
     if(err) throw err;
     //console.log(response);
     response.data=JSON.parse(response.data);
@@ -44,8 +43,6 @@ storehippo.list(request, function(err, response){
             var methods = JSON.parse(res.data);
             //console.log(methods[1].settings.services);
 
-            var method = methods;
-
             var getrate = {
                 entity : "ms.fulfillment",
 
@@ -62,9 +59,22 @@ storehippo.list(request, function(err, response){
 
             storehippo.call("getRates", getrate, function(err, res){
                if(err) throw err;
-                console.log("Respomse From getRates:.........",res);
+                console.log("Respomse From getRates:.........",JSON.parse(res.data));
             });
         });
     });
 
-    });
+});
+
+/*
+var request = {
+    entity : "ms.fulfillment",
+    data: {pincode: 110085}
+};
+
+
+storehippo.call("checkDeliveryAvailability", request, function(err, response) {
+    if (err) throw err;
+console.log(response);
+});
+*/
