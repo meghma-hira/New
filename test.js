@@ -1,61 +1,71 @@
+/**
+ * Created by hippo-innovations on 6/1/16.
+ */
 var storehippo = require('storehippo-nodejs-sdk')({
     storename : "atishaydemo2",
     access_key : "admin"
 });
 
-var assert = require('assert');
+var request = {
+    entity : "ms.orders",
 
-describe('StoreHippo', function() {
+    query : {
 
-    this.timeout(1000000);
+        start: "11",
+        limit: "1"
 
-    before(function (done) {
+    }
 
-        done();
-    });
+};
 
-    beforeEach(function (done) {
-        //An action to be performed before each test case
-        done();
-    });
+//  "array-of-filters" == [{field : "field name", value : "field-value", operator : "operator(equal, less_than, greater_than)"}]
 
-    describe("#First", function () {
+storehippo.list(request, function(err, response){
+    if(err) throw err;
+    //console.log(response);
+    var order = response.data;
 
-        it('Adding a Brand and listing them', function (done) {
-            var request = {
-                entity: 'ms.orders'
-            };
-            storehippo.list(request, function (err, result) {
-                assert.equal(200, result.status, 'Adding an empty Brand does not give prorper error');
-                done();
-            });
+    var getadd = {
+        entity : "ms.orders",
+        arr : response.data
 
-            describe("#Second", function () {
+    };
 
-                it('Adding a Brand', function (done) {
-                    var request = {
-                        entity: 'ms.orders'
-                    };
-                    storehippo.list(request, function (err, result) {
-                        assert.equal(200, result.status, 'Adding an empty Brand does not give prorper error');
-                        //assert.equal(result.data, 'name is required.', 'Adding an empty Brand does not give prorper error');
-                        done();
-                    });
+    //console.log(getadd);
 
+    storehippo.call ("getAddresses", getadd, function(err, res){
+        if(err) throw err;
+        //console.log(res);
+        var pickup = res.data;
 
-                });
+        var data1 = {
+            entity : "ms.fulfillment"
+        };
 
-                it('should return -1 when the value is not present', function (done) {
-                    var request = {
-                        entity: 'ms.orders'
-                    };
-                    storehippo.list(request, function (err, result) {
-                        assert.equal(200, result.status, 'Adding an empty Brand does not give prorper error');
-                        //assert.equal(result.data, 'name is required.', 'Adding an empty Brand does not give prorper error');
-                        done();
-                    });
-                });
-            });
+        storehippo.call("getMethods", data1, function(err, res){
+          //console.log(res);
+            var method = res.data;
+
+            var data2 = {
+                entity : "ms.fulfillment",
+                arr : {
+                    level : data1.level,
+                    method : res,
+                    orderDetail : order,
+                    pickupAddress : pickup
+
+                }
+            }
+
+            //console.log(data2.arr);
+
+            /*storehippo.call ("getRates", data2, function(err, res){
+                if(err) throw err;
+                console.log(res);
+            });*/
         });
     });
+
+    //console.log(getadd);
+
 });
