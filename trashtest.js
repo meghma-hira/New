@@ -8,18 +8,18 @@ var assert = require('assert');
 describe('StoreHippo', function() {
 
     this.timeout(1000000);
-    /*
+/*
 
-     before(function (done) {
+    before(function (done) {
 
-     done();
-     });
+        done();
+    });
 
-     beforeEach(function (done) {
-     //An action to be performed before each test case
-     done();
-     });
-     */
+    beforeEach(function (done) {
+        //An action to be performed before each test case
+        done();
+    });
+*/
 
     describe("#First: storehippo.list", function () {
 
