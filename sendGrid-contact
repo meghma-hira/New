@@ -1,0 +1,45 @@
+var request= require('request');
+
+var sendGrid = require('sendgrid-contacts')(api_key = "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");
+
+//var api_key = "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";
+
+/*sendGrid.lists.getAllLists(function(err, res){
+    console.log(res);
+});*/
+
+var body = [
+    {
+        "email": "betty@example.com",
+        "first_name": "Betty"
+
+    },
+
+    {
+        "email": "sam@example.com",
+        "first_name": "Sam"
+
+    }
+];
+
+sendGrid.recipients.addRecipients(body, function(err, res){
+  if(err) throw err;
+
+    var body = [];
+
+    res.persisted_recipients.forEach(function(item){
+       body.push(item);
+    });
+
+    var params = {
+        "list_id": 46123
+    };
+
+    sendGrid.lists.addListRecipients(params, body, function(err, res){
+        if(err) throw err;
+        console.log(res);
+
+    });
+
+});
+
