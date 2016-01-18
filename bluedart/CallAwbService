@@ -1,0 +1,91 @@
+<?php 
+
+	$options = getopt("d:p:f:");
+
+    $json_data = $options['d'];
+
+    $request = json_decode($json_data);
+	/* 
+	#echo "Start  of Soap 1.1 version ( BasicHttpBinding) setting"
+			$soap = new DebugSoapClient('http://netconnect.bluedart.com/Demo/ShippingAPI/WayBill/WayBillGeneration.svc?wsdl',
+			array(
+			'trace' 							=> 1,  
+			'style'								=> SOAP_DOCUMENT,
+			'use'									=> SOAP_LITERAL,
+			'soap_version' 				=> SOAP_1_1
+			));
+			
+			$soap->__setLocation("http://netconnect.bluedart.com/Demo/ShippingAPI/Waybill/WayBillGeneration.svc/Basic");
+			
+			$soap->sendRequest = true;
+			$soap->printRequest = false;
+			$soap->formatXML = true; 	
+	#echo "end of Soap 1.1 version setting" 
+	*/
+	 
+	 #echo "Start  of Soap 1.2 version (ws_http_Binding)  setting";
+				$soap = new DebugSoapClient('http://netconnect.bluedart.com/Ver1.7/Demo/ShippingAPI/WayBill/WayBillGeneration.svc?wsdl',
+				array(
+				'trace' 							=> 1,  
+				'style'								=> SOAP_DOCUMENT,
+				'use'									=> SOAP_LITERAL,
+				'soap_version' 				=> SOAP_1_2
+				));
+				
+				$soap->__setLocation("http://netconnect.bluedart.com/Ver1.7/Demo/ShippingAPI/WayBill/WayBillGeneration.svc");
+				
+				$soap->sendRequest = true;
+				$soap->printRequest = false;
+				$soap->formatXML = true; 
+				
+				$actionHeader = new SoapHeader('http://www.w3.org/2005/08/addressing','Action','http://tempuri.org/IWayBillGeneration/GenerateWayBill',true);
+				$soap->__setSoapHeaders($actionHeader);	
+		#echo "end of Soap 1.2 version (WSHttpBinding)  setting";
+
+
+$params = $request;
+#echo "<br>";
+#echo '<h2>Parameters</h2><pre>'; print_r($params); echo '</pre>';
+
+// Here I call my external function
+$result = $soap->__soapCall('GenerateWayBill',array($params));
+ 
+#echo "Generated Waybill number " + $result->GenerateWayBillResult->AWBNo;
+#echo $result->GenerateWayBillResult->Status->WayBillGenerationStatus->StatusInformation 
+
+$pdf =$result->GenerateWayBillResult->AWBPrintContent;
+unset($result->GenerateWayBillResult->AWBPrintContent);
+$result  = json_encode($result);
+print_r($result);
+echo '<pdf>'; print_r($pdf);
+/*echo 'oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo';
+echo mb_detect_encoding($pdf, "auto");*/
+
+class DebugSoapClient extends SoapClient {
+  public $sendRequest = true;
+  public $printRequest = true;
+  public $formatXML = true;
+
+  public function __doRequest($request, $location, $action, $version, $one_way=0) {
+    if ( $this->printRequest ) {
+      if ( !$this->formatXML ) {
+        $out = $request;
+      }
+      else {
+        $doc = new DOMDocument;
+        $doc->preserveWhiteSpace = false;
+        $doc->loadxml($request);
+        $doc->formatOutput = true;
+        $out = $doc->savexml();
+      }
+      echo $out;
+    }
+
+    if ( $this->sendRequest ) {
+      return parent::__doRequest($request, $location, $action, $version, $one_way);
+    }
+    else {
+      return '';
+    }
+  }
+}
