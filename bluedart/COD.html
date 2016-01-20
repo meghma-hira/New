@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+
+    <title></title>
+    <style type="text/css">
+
+         body {margin-top: 0;margin-left: 0;}
+
+         @font-face {
+             font-family: "Barcode";
+             src: url(barcode.TTF) format("truetype");
+         }
+
+         #outer {
+             position:relative;
+             overflow: hidden;
+             margin: 16px 10px 13px 13px;
+             border: 2px solid #000000;
+             width: 780px;
+             height: 1094px;
+         }
+
+         .wrapper {
+             border-bottom: 2px solid #000000;
+         }
+
+         #div_logo {
+             position:absolute;
+             top:0;
+             left:0;
+             z-index:-1;
+             width:220px;
+             height:130px;
+             border: none;
+         }
+
+         #div_logo #logo {
+             width:220px;
+             border: none;
+             height:110px;
+         }
+
+         #add_invoice {
+             margin: 0 0 0 254px;
+             width: 526px;
+             overflow: hidden;
+         }
+
+         #add {
+             float: left;
+             margin: 0;
+             padding-top: 0;
+             padding-bottom: 0;
+             padding-right: 5px;
+             width: 250px;
+             border-right: 2px solid #000000;
+         }
+
+         #invoice {
+             float: right;
+             margin: 0;
+             padding: 0;
+             width: 240px;
+             overflow: hidden;}
+
+         .com{
+             font-weight: bold;
+             font-size: 16px;
+             font-family: 'Arial';
+             line-height: 18px;
+             text-align: left;
+             margin-top: 0;
+             margin-bottom: 5px;
+         }
+
+         .add{
+             font-size: 16px;
+             font-family: 'Arial';
+             line-height: 18px;
+             text-align: left;
+             margin-top: 0;
+             margin-bottom: 0;
+         }
+
+
+         #delivery_details {
+             border-bottom:2px solid #000000;;
+             margin: 0;
+             padding: 10px;
+             width: 100%;
+             overflow: hidden;
+         }
+
+         #delivery_details div p {
+             margin: 0;
+             padding: 0;
+         }
+
+         .headings {
+             font-family: 'Arial';
+             font-size: 20px;
+             padding: 10px;
+         }
+        .table1 {
+            border: 1px solid #000000;
+            margin: 20px;
+            width: 90%;
+        }
+
+        .table1 th {
+            border: 1px solid #000000;
+        }
+
+        .table1 tr td {
+            border: 1px solid #000000;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div id="outer">
+
+    <div class="wrapper">
+        <div id="div_logo">
+            <img src="" alt="Company Logo" id="logo">
+        </div>
+        <div id="add_invoice">
+            <div id="add">
+                <p class="com">{{shipper_name}}</p>
+                <p class="add">{{shipper_add1}}</p>
+                <p class="add">{{shipper_add2}} {{shipper_pin}}</p>
+                <p class="add">Phone : {{shipper_phone}}</p>
+                <p class="add">Email : {{shipper_email}}</p>
+                <!--<p class="add">TIN : {{company_tin_no}}</p>-->
+                <p></p>
+            </div>
+            <div id="invoice">
+                <p class="add">INVOICE NO : {{invoice_no}}</p>
+                <p class="add">INVOICE DATE : {{invoice_date}}</p>
+                <p class="add">VAT REG NO : {{vat_reg_no}}</p>
+                <p class="add">CST REG NO : {{cst_reg_no}}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="delivery_details">
+        <div style="float: left; width: 420px">
+            <div>
+                <div style="display: block">
+                    <div style="float: left">
+                        <p class="headings">DELIVER TO</p>
+                        <p>{{del_name}}</p>
+                        <p>{{del_add1}}</p>
+                        <p>{{del_add2}} {{del_pin}}</p>
+                        <!--<p>{{del_country}}</p>-->
+                        <p>T: {{del_number}}</p>
+                        <!--<p>{{pinCode}} -DEL/ MVH</p>-->
+                    </div>
+                    <div style="float: right">
+                        <p class="headings">ORDER ID</p>
+                        <p style="font-family:Barcode">OID267</p>
+                        <img src="" alt="Order ID Barcode" style="width: 200px; height: 50px">
+                        <p>{{order_id}}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div style="float: right;">
+            <p class="headings">CASH ON DELIVERY (COD)</p>
+            <!--<img src="" alt="COD Barcode" style="width: 200px; height: 50px">-->
+            <p style="font-family: Barcode; font-size: 40px">69500148115</p>
+            <br>
+            <p>AWB No: {{AWBNo}}</p>
+            <p>Weight (Kgs): {{weight}}</p>
+            <p>Dimentions (cms): {{l}} X {{b}} X {{h}}</p>
+            <p>Order ID: {{order_id}}</p>
+            <p>Order Date: {{order_date}}</p>
+            <p>Pieces: {{count}}</p>
+        </div>
+
+        <div style="margin-top: 20px; padding-top: 10px; width: 420px; text-align: center">
+            <p class="headings">AMOUNT TO BE COLLECTED</p>
+            <p>Rs. {{amount}}</p>
+        </div>
+
+    </div>
+    <div style="text-align: center">
+        <table class="table1" cellpadding="0" cellspacing="0">
+            <tr class="tr1">
+                <th class="th1">Sr</th>
+                <th class="th1">Item Code</th>
+                <th class="th1">Item Description</th>
+                <th class="th1">Quantity</th>
+                <th>Value</th>
+                <th>Total</th>
+            </tr>
+            <tr class="tr1">
+                <!--<td class="td1"></td>
+                <td class="td1"></td>
+                <td class="td1"></td>
+                <td class="td1"></td>
+                <td class="td1"></td>
+                <td class="td1"></td>-->
+            </tr>
+            <tr class="tr1">
+                <td class="td1" colspan="5">Total</td>
+                <td class="td1">{{total}}</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+    </div>
+</div>
+</body>
+</html>
